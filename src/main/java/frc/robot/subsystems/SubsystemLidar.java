@@ -16,8 +16,7 @@ public class SubsystemLidar extends SubsystemBase {
   private final RPLidarA1 LIDAR;
   private boolean isScanning = false;
 
-  public SubsystemLidar(DataOutPutFinish callback, boolean isStartScanning) {
-    final String USBPort = "/dev/USB0";// "/dev/tty.usbserial-0001";
+  public SubsystemLidar(DataOutPutFinish callback, boolean isStartScanning, final String USBPort) {
     this.LIDAR = new RPLidarA1(USBPort);
 
     try {

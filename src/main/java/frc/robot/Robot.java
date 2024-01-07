@@ -120,7 +120,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     cartographer = new GoogleCartographer();
-    lidar = new SubsystemLidar(cartographer.getCallback(), true);
+    lidar = new SubsystemLidar(cartographer.getCallback(), true, "/dev/ttyUSB0");
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
