@@ -12,7 +12,7 @@ public class SLAM {
   private static final int MAP_SIZE_PIXELS = 200;
   private static final double MAP_SIZE_METERS = 10; // 32;
   private static final double HOLE_WIDTH_MM = 200; // 32;
-  private static final int MAP_QUALITY = 5; // 0-255; default 50
+  private static final int MAP_QUALITY = 50; // 0-255; default 50
   private static SinglePositionSLAM slam;
 
   public SLAM(int scanSize, int detectionAnglDeg) {
