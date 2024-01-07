@@ -36,6 +36,7 @@ dependencies {
     implementation files('libs/BreezySLAM.jar')
     implementation files('libs/RPLidar4J-1.0.0.jar')
     implementation files('libs/AStarPathFinderJava-1.0.jar')
+    implementation files('libs/Cartographer4Java.jar')
 
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'

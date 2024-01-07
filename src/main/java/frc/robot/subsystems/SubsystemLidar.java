@@ -1,136 +1,95 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import ev3dev.sensors.slamtec.RPLidarA1;
+import ev3dev.sensors.slamtec.RPLidarA1ServiceException;
 import ev3dev.sensors.slamtec.RPLidarProviderListener;
 import ev3dev.sensors.slamtec.model.Scan;
 import ev3dev.sensors.slamtec.model.ScanDistance;
-import frc.robot.subsystems.path.map.SLAM;
+import frc.robot.subsystems.path.map.util.DataOutPutFinish;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
 
 public class SubsystemLidar extends SubsystemBase {
-
   private final RPLidarA1 LIDAR;
-  private final int SCAN_SIZE = 426;
-  private final int DETECTION_ANGLE_DEG = 360;
-
   private boolean isScanning = false;
-  private long startTime = 0;
 
-  public final SLAM slam;
-
-  public SubsystemLidar() {
-    startTime = System.currentTimeMillis();
-    final String USBPort = "/dev/tty.usbserial-0001";
+  public SubsystemLidar(DataOutPutFinish callback, boolean isStartScanning) {
+    final String USBPort = "/dev/USB0";// "/dev/tty.usbserial-0001";
     this.LIDAR = new RPLidarA1(USBPort);
-    System.out.println("DONE INIT!");
-    slam = new SLAM(SCAN_SIZE, DETECTION_ANGLE_DEG);
 
     try {
       LIDAR.init();
 
       LIDAR.addListener(
-        new RPLidarProviderListener() {
-          @Override
-          public void scanFinished(Scan scan) {
-            if (scan.getDistances().size() < 360) {
-              return;
+          new RPLidarProviderListener() {
+            @Override
+            public void scanFinished(Scan scan) {
+              if (!isScanning || scan.getDistances().size() < 360) {
+                return;
+              }
+
+              List<ScanDistance> distances = new ArrayList<>(scan.getDistances());
+              distances.sort(Comparator.comparing(ScanDistance::getAngle));
+
+              // call the callback of scan finish
+              callback.lidarScanFinished(convertToCartesian(distances));
             }
+          });
 
-            List<ScanDistance> distances = new ArrayList<>(scan.getDistances());
-            distances.sort(Comparator.comparing(ScanDistance::getAngle));
-
-            int[] scanInt = new int[SCAN_SIZE];
-
-            for (int i = 0; i < scanInt.length; i++) {
-              final double angle = (double) i /
-              scanInt.length *
-              DETECTION_ANGLE_DEG;
-              final ScanDistance closest = findClosestScanDistance(
-                distances,
-                angle
-              );
-              scanInt[i] = (int) Math.ceil(closest.getDistance() * 10);
-            }
-
-            slam.updateSlam(scanInt);
-          }
-        }
-      );
-
-      LIDAR.scan();
-      isScanning = true;
+      if (isStartScanning) {
+        LIDAR.scan();
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  public int getSize() {
-    return slam.getSize();
-  }
-
-  public double getSizeM() {
-    return slam.getSizeM();
-  }
-
-  public byte[] getMap() {
-    return slam.getMap();
-  }
-
-  public double[] getPositionData() {
-    return slam.getPosition();
-  }
-
-  /*public void tick(CvSource cv) {
-    if (System.currentTimeMillis() - startTime >= 1000) {
-      byte[] map = slam.getMap();
-      Mat frame = new Mat(slam.getSize(), slam.getSize(), CvType.CV_8UC1);
-      frame.put(0, 0, map);
-      cv.putFrame(frame);
-      startTime = System.currentTimeMillis();
+  public void startScanning() {
+    try {
+      LIDAR.scan();
+    } catch (RPLidarA1ServiceException e) {
+      e.printStackTrace();
     }
-  }*/
+  }
 
-  private ScanDistance findClosestScanDistance(
-    List<ScanDistance> distances,
-    double angle
-  ) {
-    int left = 0;
-    int right = distances.size() - 1;
+  public void setScanning(boolean state) {
+    this.isScanning = state;
+  }
 
-    while (left <= right) {
-      int mid = left + (right - left) / 2;
-      ScanDistance midDistance = distances.get(mid);
+  public boolean isScanning() {
+    return isScanning;
+  }
 
-      if (midDistance.getAngle() == angle) {
-        return midDistance;
-      } else if (midDistance.getAngle() < angle) {
-        left = mid + 1;
+  public void closeLidar() {
+    try {
+      this.LIDAR.close();
+    } catch (RPLidarA1ServiceException e) {
+    }
+  }
+
+  private float[][] convertToCartesian(List<ScanDistance> distances) {
+    float[] xCoordinates = new float[distances.size()];
+    float[] yCoordinates = new float[distances.size()];
+
+    for (int i = 0; i < distances.size(); i++) {
+      double angleRadians = Math.toRadians(distances.get(i).getAngle());
+      double dist = distances.get(i).getDistance() / 100;
+      if (dist < 16) {
+        xCoordinates[i] = (float) (dist * Math.cos(angleRadians));
+        yCoordinates[i] = (float) (dist * Math.sin(angleRadians));
       } else {
-        right = mid - 1;
+        xCoordinates[i] = (float) (17 * Math.cos(angleRadians));
+        yCoordinates[i] = (float) (17 * Math.sin(angleRadians));
       }
     }
 
-    if (right < 0) {
-      return distances.get(0);
-    } else if (left >= distances.size()) {
-      return distances.get(distances.size() - 1);
-    } else {
-      ScanDistance before = distances.get(right);
-      ScanDistance after = distances.get(left);
+    float[][] retList = new float[2][];
+    retList[0] = xCoordinates;
+    retList[1] = yCoordinates;
 
-      if (
-        Math.abs(before.getAngle() - angle) < Math.abs(after.getAngle() - angle)
-      ) {
-        return before;
-      } else {
-        return after;
-      }
-    }
+    return retList;
   }
 }
