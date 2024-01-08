@@ -72,7 +72,7 @@ public class SubsystemPathExec extends SubsystemBase {
     mapRenderTick(cv, output);
     float[] curPosData = output.functions.GetGlobalData();
 
-    if (finderRunCount >= 50 && renderedNewMap) {
+    if (finderRunCount >= 50 && renderedNewMap && cutMap != null) {
       finderRunCount = 0;
 
       if (finderRunThread != null) {
@@ -88,13 +88,12 @@ public class SubsystemPathExec extends SubsystemBase {
           finderRunThread = null;
         }
       } else {
-        float[] globalPos = output.functions.GetGlobalData();
-        int[] endPosLocal = output.FromPosToMap(globalPos);
+        int[] endPosLocal = convertPosToNewMapScale(output, 250);
         endPos = new int[] { endPosLocal[0] + 50, endPosLocal[1] };
         finderRunThread = new FinderThread(
             endPos,
             output.FromPosToMap(new float[] { curPosData[0], curPosData[1] }),
-            output.map, (int) output.mapSizeX, (int) output.mapSizeY);
+            cutMap, (int) 250, (int) 250);
         finderRunThread.start();
 
         System.out.println("STARTING FINDER!");
@@ -214,6 +213,13 @@ public class SubsystemPathExec extends SubsystemBase {
     return new ArrayList<>();
   }
 
+  private int[] convertPosToNewMapScale(CartographerOut output, int newSize) {
+    return output.FromPosToMapWithNewMap(output.functions.GetGlobalData(),
+        newSize,
+        newSize,
+        (int) output.mapSizeX, (int) output.mapSizeY);
+  }
+
   private void mapRenderTick(CvSource cv, CartographerOut output) {
     if (output.map.length > 0) {
       if (mapRenderTick >= 50) {
@@ -230,7 +236,7 @@ public class SubsystemPathExec extends SubsystemBase {
           newMap[(int) (i.y * newRes + i.x)] = 0;
         }
 
-        int[] curPos = output.FromPosToMap(output.functions.GetGlobalData());
+        int[] curPos = convertPosToNewMapScale(output, newRes);
         newMap[curPos[1] * newRes + curPos[0]] = 0;
         newMap[curPos[1] * newRes + curPos[0] + 1] = 0;
         newMap[curPos[1] * newRes + curPos[0] + 2] = 0;

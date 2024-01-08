@@ -32,6 +32,13 @@ public class CartographerOut {
         return new int[] { fromXToMapX(curPos[0]), fromXToMapX(curPos[1]) };
     }
 
+    public int[] FromPosToMapWithNewMap(float[] curPos, int newMapSizeX, int newMapSizeY, int oldMapX, int oldMapY) {
+        int[] curUnmodifiedPos = FromPosToMap(curPos);
+        double changeX = newMapSizeX / oldMapX;
+        double changeY = newMapSizeY / oldMapY;
+        return new int[] { (int) (curUnmodifiedPos[0] * changeX), (int) (curUnmodifiedPos[1] * changeY) };
+    }
+
     public double mapXToGlobalX(int x) {
         return (x * resolution + originX);
     }
