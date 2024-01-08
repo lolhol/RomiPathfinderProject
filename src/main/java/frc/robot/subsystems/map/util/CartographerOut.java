@@ -11,6 +11,13 @@ public class CartographerOut {
 
     public CartographerOut(long mapSizeX, long mapSizeY, double originX, double originY, double resolution,
             byte[] map, CartoFunctions functions) {
+        this.mapSizeX = mapSizeX;
+        this.mapSizeY = mapSizeY;
+        this.originX = originX;
+        this.originY = originY;
+        this.resolution = resolution;
+        this.map = map;
+        this.functions = functions;
     }
 
     public int fromXToMapX(double x) {

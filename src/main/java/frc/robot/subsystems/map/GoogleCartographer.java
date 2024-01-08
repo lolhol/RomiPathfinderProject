@@ -38,6 +38,10 @@ public class GoogleCartographer {
         final byte[] mapBytes = new byte[byteBuffer.remaining()];
         byteBuffer.get(mapBytes);
 
+        if (mapBytes.length == 0) {
+            return null;
+        }
+
         return new CartographerOut(mapSizeX, mapSizeY, originX, originY, resolution, mapBytes, new CartoFunctions() {
             @Override
             public float[] GetGlobalData() {
