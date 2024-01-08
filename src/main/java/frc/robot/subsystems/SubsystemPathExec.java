@@ -30,6 +30,8 @@ public class SubsystemPathExec extends SubsystemBase {
   private FinderThread finderRunThread = null;
   private final RomiDrivetrain rominator;
 
+  private float curRotation = 0;
+
   public int[] endPos = new int[] { 148, 98 };
 
   private int initCount = 0;
@@ -75,7 +77,7 @@ public class SubsystemPathExec extends SubsystemBase {
     mapRenderTick(cv, output);
     float[] curPosData = output.functions.GetGlobalData();
 
-    if (finderRunCount >= 50 && renderedNewMap && cutMap != null && !isPathfinderPathValid()) {
+    if (finderRunCount >= 50 && renderedNewMap && cutMap != null) {
       finderRunCount = 0;
 
       if (finderRunThread != null) {
@@ -157,7 +159,7 @@ public class SubsystemPathExec extends SubsystemBase {
 
           if (angleDiff > 0) {
             if (!sentQueue[1] || ticksUntilSend >= 50) {
-              rominator.turn(false, 33);
+              rominator.turn(true, 33);
               sentQueue[1] = true;
 
               if (sentQueue[0]) {
@@ -168,7 +170,7 @@ public class SubsystemPathExec extends SubsystemBase {
             }
           } else {
             if (!sentQueue[0] || ticksUntilSend >= 50) {
-              rominator.turn(true, 33);
+              rominator.turn(false, 33);
               sentQueue[0] = true;
 
               if (sentQueue[1]) {
@@ -180,7 +182,7 @@ public class SubsystemPathExec extends SubsystemBase {
           }
         } else {
           if (sentQueue[0] || sentQueue[1]) {
-            rominator.turn(true, 0);
+            rominator.turn(false, 0);
             sentQueue[0] = false;
             sentQueue[1] = false;
           } else {
