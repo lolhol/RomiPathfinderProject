@@ -29,7 +29,7 @@ public class SubsystemPathExec extends SubsystemBase {
   private FinderThread finderRunThread = null;
   private final RomiDrivetrain rominator;
 
-  public int[] endPos = new int[] { 25, 25 };
+  public int[] endPos = new int[] { 148, 98 };
 
   private int initCount = 0;
 
@@ -90,17 +90,17 @@ public class SubsystemPathExec extends SubsystemBase {
           finderRunThread = null;
         }
       } else {
-        int[] endPosLocal = convertPosToNewMapScale(output, 250);
+        // int[] endPosLocal = convertPosToNewMapScale(output, 250);
 
         if (!isAdded) {
           isAdded = true;
         }
-        endPos = new int[] { endPosLocal[0], endPosLocal[1] + 50 };
-        System.out.println(endPos[0] + " | " + endPos[1]);
+        // endPos = new int[] { endPosLocal[0], endPosLocal[1] - 50 };
+        // System.out.println(endPos[0] + " | " + endPos[1]);
 
         finderRunThread = new FinderThread(
             endPos,
-            output.FromPosToMap(new float[] { curPosData[0], curPosData[1] }),
+            convertPosToNewMapScale(output, 250),
             cutMap, (int) 250, (int) 250);
         finderRunThread.start();
 
