@@ -244,7 +244,7 @@ public class SubsystemPathExec extends SubsystemBase {
   public static double calculateTurn(float[] currentPosition, double[] targetNode, double currentAngle) {
     double angle = Math.toDegrees(Math.atan2(targetNode[1] - currentPosition[1], targetNode[0] - currentPosition[0]));
     String turnDirection = (angle > currentAngle) ? "right" : "left";
-    double turnAngle = (turnDirection == "right" ? -1 : 1)
+    double turnAngle = (turnDirection == "left" ? -1 : 1)
         * Math.min(Math.abs(angle - currentAngle), 360 - Math.abs(angle - currentAngle));
 
     return turnAngle;
