@@ -22,6 +22,11 @@ public class MathUtil {
     return angle < 0 ? -angle : 360 - angle;
   }
 
+  public static double wrap360Rad(double radAngle) {
+    double angle = Math.toDegrees(radAngle);
+    return angle < 0 ? -angle : 360 - angle;
+  }
+
   public static int[] getPointDistFromWithAngle(
       int[] curPoint,
       double curAngle,
