@@ -235,7 +235,7 @@ public class SubsystemPathExec extends SubsystemBase {
 
     // System.out.println(angleDeg + " !!!!!!!!");
 
-    return MathUtil.diffDeg(angle, angleDeg);
+    return MathUtil.diffDeg(angleDeg, angle);
   }
 
   public static double calculateTurn(float[] currentPosition, double[] targetNode, double currentAngle) {
