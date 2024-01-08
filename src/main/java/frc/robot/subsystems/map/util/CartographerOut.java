@@ -34,8 +34,8 @@ public class CartographerOut {
 
     public int[] FromPosToMapWithNewMap(float[] curPos, int newMapSizeX, int newMapSizeY, int oldMapX, int oldMapY) {
         int[] curUnmodifiedPos = FromPosToMap(curPos);
-        double changeX = newMapSizeX / oldMapX;
-        double changeY = newMapSizeY / oldMapY;
+        double changeX = oldMapX / newMapSizeX;
+        double changeY = oldMapY / newMapSizeY;
         return new int[] { (int) (curUnmodifiedPos[0] * changeX), (int) (curUnmodifiedPos[1] * changeY) };
     }
 
