@@ -130,6 +130,15 @@ public class Robot extends TimedRobot {
     pathExec = new SubsystemPathExec(true, m_romiDrivetrain);
     cartographer.initiate("src/main/java/frc/robot/configuration/cartographer_config",
         "cartographer_config_main.lua", false, false, 10);
+
+    cvSource = CameraServer.putVideo("MJPEG Server", 200, 200);
+    ShuffleboardTab tab = Shuffleboard.getTab("SLAM");
+    tab
+        .add("SLAM map", cvSource)
+        .withWidget(BuiltInWidgets.kCameraStream)
+        .withSize(3, 2)
+        .withPosition(0, 0);
+
     pathExec.setDefaultCommand(
         new RunCommand(() -> pathExec.tick(cartographer.getCartographerMapData(), cvSource), pathExec));
 
