@@ -224,17 +224,30 @@ public class SubsystemPathExec extends SubsystemBase {
   }
 
   private double getAngle(double[] mCurSQGoing, float[] curPos) {
-    double dy = curPos[1] - mCurSQGoing[1]; // 7228-7450
-    double dx = mCurSQGoing[0] - curPos[0]; // 5000-5313
-    double angle = MathUtil.normaliseDeg(
-        Math.atan2(dy, dx) / Math.PI * 180);
+    return calculateTurn(curPos, mCurSQGoing, Math.toDegrees(curPos[2]));
 
-    // System.out.println(curPos[2]);
-    double angleDeg = MathUtil.wrap360((curPos[2] / Math.PI * 180));
+    /*
+     * double dy = curPos[1] - mCurSQGoing[1]; // 7228-7450
+     * double dx = mCurSQGoing[0] - curPos[0]; // 5000-5313
+     * double angle = MathUtil.normaliseDeg(
+     * Math.atan2(dy, dx) / Math.PI * 180);
+     * 
+     * // System.out.println(curPos[2]);
+     * double angleDeg = MathUtil.wrap360((curPos[2] / Math.PI * 180));
+     * 
+     * // System.out.println(angleDeg + " !!!!!!!!");
+     * 
+     * return MathUtil.diffDeg(angle, angleDeg);
+     */
+  }
 
-    // System.out.println(angleDeg + " !!!!!!!!");
+  public static double calculateTurn(float[] currentPosition, double[] targetNode, double currentAngle) {
+    double angle = Math.toDegrees(Math.atan2(targetNode[1] - currentPosition[1], targetNode[0] - currentPosition[0]));
+    String turnDirection = (angle > currentAngle) ? "right" : "left";
+    double turnAngle = (turnDirection == "right" ? -1 : 1)
+        * Math.min(Math.abs(angle - currentAngle), 360 - Math.abs(angle - currentAngle));
 
-    return MathUtil.diffDeg(angle, angleDeg);
+    return turnAngle;
   }
 
   private List<Node> removeEverythingUntil(List<Node> original) {
