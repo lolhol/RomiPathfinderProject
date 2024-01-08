@@ -19,7 +19,7 @@ public class MathUtil {
   }
 
   public static double wrap360(double angle) {
-    return angle < 0 ? angle : 360 - angle;
+    return angle < 0 ? -angle : 360 - angle;
   }
 
   public static int[] getPointDistFromWithAngle(
