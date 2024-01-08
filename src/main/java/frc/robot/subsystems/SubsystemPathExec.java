@@ -224,7 +224,7 @@ public class SubsystemPathExec extends SubsystemBase {
   }
 
   private double getAngle(double[] mCurSQGoing, float[] curPos) {
-    return calculateTurn(curPos, mCurSQGoing, Math.toDegrees(curPos[2]));
+    return calculateTurn(curPos, mCurSQGoing, MathUtil.wrap360(Math.toDegrees(curPos[2])));
 
     /*
      * double dy = curPos[1] - mCurSQGoing[1]; // 7228-7450
@@ -242,12 +242,13 @@ public class SubsystemPathExec extends SubsystemBase {
   }
 
   public static double calculateTurn(float[] currentPosition, double[] targetNode, double currentAngle) {
-    double angle = Math.toDegrees(Math.atan2(targetNode[1] - currentPosition[1], targetNode[0] - currentPosition[0]));
-    String turnDirection = (angle > currentAngle) ? "right" : "left";
-    double turnAngle = (turnDirection == "left" ? -1 : 1)
-        * Math.min(Math.abs(angle - currentAngle), 360 - Math.abs(angle - currentAngle));
+    double targetAngle = Math
+        .toDegrees(Math.atan2(targetNode[1] - currentPosition[1], targetNode[0] - currentPosition[0]));
+    targetAngle = (targetAngle + 360) % 360;
+    double angleDifference = (targetAngle - currentAngle + 360) % 360;
+    double optimalAngle = (angleDifference <= 180) ? angleDifference : angleDifference - 360;
 
-    return turnAngle;
+    return optimalAngle;
   }
 
   private List<Node> removeEverythingUntil(List<Node> original) {
