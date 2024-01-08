@@ -97,7 +97,7 @@ public class SubsystemPathExec extends SubsystemBase {
 
         if (!isAdded) {
           isAdded = true;
-          endPos = new int[] { curPos[0], curPos[1] - 20 };
+          endPos = new int[] { curPos[0] - 20, curPos[1] };
         }
 
         // System.out.println(endPos[0] + " | " + endPos[1]);
