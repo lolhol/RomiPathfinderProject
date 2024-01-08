@@ -202,19 +202,21 @@ public class SubsystemPathExec extends SubsystemBase {
   }
 
   private void mapRenderTick(CvSource cv, CartographerOut output) {
-    if (mapRenderTick >= 25) {
-      mapRenderTick = 0;
-      Mat frame = new Mat((int) output.mapSizeX, (int) output.mapSizeY, CvType.CV_8UC1);
+    if (output.map.length > 0) {
+      if (mapRenderTick >= 25) {
+        mapRenderTick = 0;
+        Mat frame = new Mat((int) output.mapSizeX, (int) output.mapSizeY, CvType.CV_8UC1);
 
-      byte[] newMap = output.map.clone();
-      for (Node i : path) {
-        newMap[(int) (i.y * output.mapSizeX + i.x)] = 0;
+        byte[] newMap = output.map.clone();
+        for (Node i : path) {
+          newMap[(int) (i.y * output.mapSizeX + i.x)] = 0;
+        }
+
+        frame.put(0, 0, newMap);
+        cv.putFrame(frame);
+      } else {
+        mapRenderTick++;
       }
-
-      frame.put(0, 0, newMap);
-      cv.putFrame(frame);
-    } else {
-      mapRenderTick++;
     }
   }
 }
