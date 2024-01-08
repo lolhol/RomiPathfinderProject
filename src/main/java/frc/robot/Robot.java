@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
   private final RomiDrivetrain m_romiDrivetrain = new RomiDrivetrain();
   private SubsystemLidar lidar;
   private SubsystemPathExec pathExec;
-  private GoogleCartographer cartographer;
+  private GoogleCartographer cartographer = new GoogleCartographer();
 
   private RobotContainer m_robotContainer;
   Thread m_visionThread;
@@ -123,13 +123,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    cartographer = new GoogleCartographer();
-    lidar = new SubsystemLidar(cartographer.getCallback(), true, "/dev/ttyUSB0");
-    lidar.setScanning(true);
+    new Thread(() -> {
+      cartographer.initiate("src/main/java/frc/robot/configuration/cartographer_config",
+          "cartographer_config_main.lua", false, false, 10);
+
+      lidar = new SubsystemLidar(cartographer.getCallback(), true, "/dev/ttyUSB0");
+      lidar.setScanning(true);
+    }).start();
 
     pathExec = new SubsystemPathExec(true, m_romiDrivetrain);
-    cartographer.initiate("src/main/java/frc/robot/configuration/cartographer_config",
-        "cartographer_config_main.lua", false, false, 10);
 
     // pathExec.setDefaultCommand(
     // new RunCommand(() -> pathExec.tick(cartographer.getCartographerMapData(),

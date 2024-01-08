@@ -68,6 +68,7 @@ public class GoogleCartographer {
 
     public void deleteCartoAndOptimize() {
         cartographerPort.stopAndOptimize();
+
     }
 
     public float getCartoAngleRadians() {
