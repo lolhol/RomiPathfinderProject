@@ -10,6 +10,7 @@ import frc.robot.subsystems.map.util.CartographerOut;
 import frc.robot.util.FinderThread;
 import frc.robot.util.MathUtil;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -261,6 +262,9 @@ public class SubsystemPathExec extends SubsystemBase {
 
         byte[] newMap = resizeMap(output.map, (int) output.mapSizeX, (int) output.mapSizeY, finalMapSize, finalMapSize);
         cutMap = newMap.clone();
+
+        newMap = new byte[250 * 250];
+        Arrays.fill(newMap, (byte) 255);
 
         for (Node i : path) {
           newMap[(int) (i.y * finalMapSize + i.x)] = 0;
