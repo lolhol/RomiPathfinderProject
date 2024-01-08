@@ -234,7 +234,7 @@ public class SubsystemPathExec extends SubsystemBase {
 
     // System.out.println(angleDeg + " !!!!!!!!");
 
-    return angleDeg - angle;
+    return MathUtil.diffDeg(angle, angleDeg);
   }
 
   private List<Node> removeEverythingUntil(List<Node> original) {
