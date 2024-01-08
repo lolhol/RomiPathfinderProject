@@ -23,6 +23,10 @@ public class GoogleCartographer {
     }
 
     public CartographerOut getCartographerMapData() {
+        if (!isInitiated) {
+            return null;
+        }
+
         byte[] rawMap = cartographerPort.paintMap();
 
         ByteBuffer byteBuffer = ByteBuffer.wrap(rawMap).order(ByteOrder.nativeOrder());

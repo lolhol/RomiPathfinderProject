@@ -128,6 +128,8 @@ public class Robot extends TimedRobot {
     lidar.setScanning(true);
 
     pathExec = new SubsystemPathExec(true, m_romiDrivetrain);
+    cartographer.initiate("src/main/java/frc/robot/configuration/cartographer_config",
+        "cartographer_config_main.lua", false, false, 10);
     pathExec.setDefaultCommand(
         new RunCommand(() -> pathExec.tick(cartographer.getCartographerMapData(), cvSource), pathExec));
 
