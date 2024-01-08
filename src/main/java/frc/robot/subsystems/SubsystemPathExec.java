@@ -268,6 +268,8 @@ public class SubsystemPathExec extends SubsystemBase {
 
         int[] curPos = output.convertPosition(output.FromPosToMap(output.functions.GetGlobalData()),
             (int) output.mapSizeX, (int) output.mapSizeY, finalMapSize, finalMapSize);
+
+        int[] pointInDirection = getPointInDirection(curPos, output.functions.GetGlobalData()[2], 5.0);
         newMap[curPos[1] * finalMapSize + curPos[0]] = 0;
         newMap[curPos[1] * finalMapSize + curPos[0] + 1] = 0;
         newMap[curPos[1] * finalMapSize + curPos[0] + 2] = 0;
@@ -280,6 +282,8 @@ public class SubsystemPathExec extends SubsystemBase {
         newMap[(endPos[1] + 1) * finalMapSize + endPos[0]] = 0;
         newMap[(endPos[1] + 1) * finalMapSize + endPos[0] + 1] = 0;
 
+        newMap[(pointInDirection[1]) * finalMapSize + pointInDirection[0]] = 0;
+
         frame.put(0, 0, newMap);
         cv.putFrame(frame);
 
@@ -288,6 +292,14 @@ public class SubsystemPathExec extends SubsystemBase {
         mapRenderTick++;
       }
     }
+  }
+
+  private int[] getPointInDirection(int[] coordinates, double angle, double dist) {
+    int x = coordinates[0];
+    int y = coordinates[1];
+    int newX = x + (int) (dist * Math.cos(angle));
+    int newY = y + (int) (dist * Math.sin(angle));
+    return new int[] { newX, newY };
   }
 
   public byte[] resizeMap(byte[] oldMap, int oldSizeX, int oldSizeY, int newSizeX, int newSizeY) {
