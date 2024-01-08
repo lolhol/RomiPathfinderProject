@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.subsystems.RomiDrivetrain;
 import frc.robot.subsystems.SubsystemLidar;
 import frc.robot.subsystems.SubsystemPathExec;
-import frc.robot.subsystems.path.map.GoogleCartographer;
+import frc.robot.subsystems.map.GoogleCartographer;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -107,6 +107,10 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
+    if (lidar != null) {
+      lidar.setScanning(false);
+      lidar.closeLidar();
+    }
   }
 
   @Override
@@ -121,6 +125,11 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     cartographer = new GoogleCartographer();
     lidar = new SubsystemLidar(cartographer.getCallback(), true, "/dev/ttyUSB0");
+    lidar.setScanning(true);
+
+    pathExec = new SubsystemPathExec(true, m_romiDrivetrain);
+    pathExec.setDefaultCommand(
+        new RunCommand(() -> pathExec.tick(cartographer.getCartographerMapData(), cvSource), pathExec));
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 

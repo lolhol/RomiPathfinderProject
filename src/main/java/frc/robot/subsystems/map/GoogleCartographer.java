@@ -1,11 +1,12 @@
-package frc.robot.subsystems.path.map;
+package frc.robot.subsystems.map;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 import brigero.cartographer4java.Cartographer4Java;
-import frc.robot.subsystems.path.map.util.CartographerOut;
-import frc.robot.subsystems.path.map.util.DataOutPutFinish;
+import frc.robot.subsystems.map.util.CartographerOut;
+import frc.robot.subsystems.map.util.DataOutPutFinish;
+import frc.robot.subsystems.map.util.CartographerOut.CartoFunctions;
 
 public class GoogleCartographer {
     private boolean isInitiated = false;
@@ -33,7 +34,12 @@ public class GoogleCartographer {
         final byte[] mapBytes = new byte[byteBuffer.remaining()];
         byteBuffer.get(mapBytes);
 
-        return new CartographerOut(mapSizeX, mapSizeY, originX, originY, resolution, mapBytes);
+        return new CartographerOut(mapSizeX, mapSizeY, originX, originY, resolution, mapBytes, new CartoFunctions() {
+            @Override
+            public float[] GetGlobalData() {
+                return GetRobotPositionData();
+            }
+        });
     }
 
     public float getGlobalX() {

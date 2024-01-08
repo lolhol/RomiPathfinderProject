@@ -47,4 +47,7 @@ public class MathUtil {
 
     return Math.signum(crossProduct) * angleRad;
   }
+
+  // public static double getDistanceBetween(double[] pos1, double[] pos2) {
+  // }
 }
