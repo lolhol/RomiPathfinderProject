@@ -70,7 +70,7 @@ public class Robot extends TimedRobot {
      * .start();
      */
 
-    cvSource = CameraServer.putVideo("MJPEG Server", 600, 600);
+    cvSource = CameraServer.putVideo("MJPEG Server", 250, 250);
 
     ShuffleboardTab tab = Shuffleboard.getTab("SLAM");
     tab

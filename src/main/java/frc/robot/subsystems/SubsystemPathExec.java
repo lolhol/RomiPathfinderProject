@@ -92,6 +92,8 @@ public class SubsystemPathExec extends SubsystemBase {
             output.FromPosToMap(new float[] { curPosData[0], curPosData[1] }),
             output.map, (int) output.mapSizeX, (int) output.mapSizeY);
         finderRunThread.start();
+
+        System.out.println("STARTING FINDER!");
       }
     } else {
       finderRunCount++;
@@ -211,7 +213,7 @@ public class SubsystemPathExec extends SubsystemBase {
       if (mapRenderTick >= 50) {
         mapRenderTick = 0;
 
-        int newRes = 600;
+        int newRes = 250;
 
         Mat frame = new Mat(newRes, newRes, CvType.CV_8UC1);
 
