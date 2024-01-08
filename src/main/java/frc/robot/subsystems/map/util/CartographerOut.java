@@ -39,6 +39,19 @@ public class CartographerOut {
         return new int[] { (int) (curUnmodifiedPos[0] * changeX), (int) (curUnmodifiedPos[1] * changeY) };
     }
 
+    public int[] convertPosition(int[] position, int oldMapSizeX, int oldMapSizeY, int newMapSizeX, int newMapSizeY) {
+        int oldX = position[0];
+        int oldY = position[1];
+
+        double xRatio = (double) newMapSizeX / oldMapSizeX;
+        double yRatio = (double) newMapSizeY / oldMapSizeY;
+
+        int newX = (int) Math.round(oldX * xRatio);
+        int newY = (int) Math.round(oldY * yRatio);
+
+        return new int[] { newX, newY };
+    }
+
     public double mapXToGlobalX(int x) {
         return (x * resolution + originX);
     }

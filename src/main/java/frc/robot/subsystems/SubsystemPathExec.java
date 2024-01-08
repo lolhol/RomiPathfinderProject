@@ -90,11 +90,13 @@ public class SubsystemPathExec extends SubsystemBase {
           finderRunThread = null;
         }
       } else {
-        int[] curPos = output.FromPosToMap(curPosData);
+        int[] curPos = output.convertPosition(output.FromPosToMap(output.functions.GetGlobalData()),
+            (int) output.mapSizeX,
+            (int) output.mapSizeY, 250, 250);
 
         if (!isAdded) {
           isAdded = true;
-          endPos = new int[] { curPos[0], curPos[1] - 100 };
+          endPos = new int[] { curPos[0], curPos[1] - 20 };
         }
 
         // System.out.println(endPos[0] + " | " + endPos[1]);
@@ -102,7 +104,7 @@ public class SubsystemPathExec extends SubsystemBase {
         finderRunThread = new FinderThread(
             endPos,
             curPos,
-            output.map, (int) output.mapSizeX, (int) output.mapSizeY);
+            cutMap, 250, 250);
         finderRunThread.start();
 
         System.out.println("STARTING FINDER!");
@@ -200,7 +202,7 @@ public class SubsystemPathExec extends SubsystemBase {
     double angle = MathUtil.normaliseDeg(
         Math.atan2(dy, dx) / Math.PI * 180);
 
-    System.out.println("!!!!! " + (curPos[2] / Math.PI * 180));
+    // System.out.println("!!!!! " + (curPos[2] / Math.PI * 180));
 
     return MathUtil.diffDeg((curPos[2] / Math.PI * 180), angle);
   }
@@ -224,13 +226,6 @@ public class SubsystemPathExec extends SubsystemBase {
     return new ArrayList<>();
   }
 
-  private int[] convertPosToNewMapScale(CartographerOut output, int newSize) {
-    return output.FromPosToMapWithNewMap(output.functions.GetGlobalData(),
-        newSize,
-        newSize,
-        (int) output.mapSizeX, (int) output.mapSizeY);
-  }
-
   private void mapRenderTick(CvSource cv, CartographerOut output) {
     if (output.map.length > 0) {
       if (mapRenderTick >= 50) {
@@ -247,7 +242,8 @@ public class SubsystemPathExec extends SubsystemBase {
           newMap[(int) (i.y * newRes + i.x)] = 0;
         }
 
-        int[] curPos = convertPosToNewMapScale(output, newRes);
+        int[] curPos = output.convertPosition(output.FromPosToMap(output.functions.GetGlobalData()),
+            (int) output.mapSizeX, (int) output.mapSizeY, newRes, newRes);
         newMap[curPos[1] * newRes + curPos[0]] = 0;
         newMap[curPos[1] * newRes + curPos[0] + 1] = 0;
         newMap[curPos[1] * newRes + curPos[0] + 2] = 0;
