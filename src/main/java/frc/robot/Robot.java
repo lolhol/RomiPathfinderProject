@@ -131,8 +131,9 @@ public class Robot extends TimedRobot {
     cartographer.initiate("src/main/java/frc/robot/configuration/cartographer_config",
         "cartographer_config_main.lua", false, false, 10);
 
-    pathExec.setDefaultCommand(
-        new RunCommand(() -> pathExec.tick(cartographer.getCartographerMapData(), cvSource), pathExec));
+    // pathExec.setDefaultCommand(
+    // new RunCommand(() -> pathExec.tick(cartographer.getCartographerMapData(),
+    // cvSource), pathExec));
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 

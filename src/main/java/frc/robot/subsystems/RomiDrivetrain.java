@@ -30,19 +30,16 @@ public class RomiDrivetrain extends SubsystemBase {
 
   // Set up the differential drive controller
   private final DifferentialDrive m_diffDrive = new DifferentialDrive(
-    m_leftMotor,
-    m_rightMotor
-  );
+      m_leftMotor,
+      m_rightMotor);
 
   /** Creates a new RomiDrivetrain. */
   public RomiDrivetrain() {
     // Use inches as unit for encoder distances
     m_leftEncoder.setDistancePerPulse(
-      (Math.PI * kWheelDiameterInch) / kCountsPerRevolution
-    );
+        (Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
     m_rightEncoder.setDistancePerPulse(
-      (Math.PI * kWheelDiameterInch) / kCountsPerRevolution
-    );
+        (Math.PI * kWheelDiameterInch) / kCountsPerRevolution);
     resetEncoders();
 
     // Invert right side since motor is flipped
@@ -50,7 +47,7 @@ public class RomiDrivetrain extends SubsystemBase {
   }
 
   public void arcadeDrive(double xaxisSpeed, double zaxisRotate) {
-    System.out.println(xaxisSpeed + " | " + zaxisRotate);
+    // System.out.println(xaxisSpeed + " | " + zaxisRotate);
     m_diffDrive.arcadeDrive(xaxisSpeed, zaxisRotate);
   }
 
