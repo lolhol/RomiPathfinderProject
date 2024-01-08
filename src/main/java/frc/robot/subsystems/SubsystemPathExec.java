@@ -209,9 +209,9 @@ public class SubsystemPathExec extends SubsystemBase {
 
         byte[] newMap = resizeMap(output.map, (int) output.mapSizeX, (int) output.mapSizeY, 600, 600);
 
-        // for (Node i : path) {
-        // newMap[(int) (i.y * 600 + i.x)] = 0;
-        // }
+        for (Node i : path) {
+          newMap[(int) (i.y * 600 + i.x)] = 0;
+        }
 
         frame.put(0, 0, newMap);
         cv.putFrame(frame);
@@ -227,8 +227,20 @@ public class SubsystemPathExec extends SubsystemBase {
       for (int x = 0; x < newSizeX; x++) {
         int oldX = (int) ((long) x * oldSizeX / newSizeX);
         int oldY = (int) ((long) y * oldSizeY / newSizeY);
+        double val = (oldMap[oldY * oldSizeX + oldX] & 0xFF) / 100.;
 
-        newMap[y * newSizeX + x] = oldMap[oldY * oldSizeX + oldX];
+        int color;
+        if (val == 2.55) {
+          color = 127;
+        } else {
+          if (val < 0.5) {
+            color = 255;
+          } else {
+            color = 0;
+          }
+        }
+
+        newMap[y * newSizeX + x] = (byte) color;
       }
     }
 
