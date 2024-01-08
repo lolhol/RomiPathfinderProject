@@ -117,7 +117,7 @@ public class SubsystemPathExec extends SubsystemBase {
         curSQGoing = path.get(path.size() - 1);
       }
 
-      if (output.distanceFromGlobalToMap(curPosData, new int[] { curSQGoing.x, curSQGoing.y }) < 10) {
+      if (output.distanceFromGlobalToMap(curPosData, new int[] { curSQGoing.x, curSQGoing.y }) < 0.1) {
         curSQGoing = null;
         rominator.forwardBackward(0);
         // Reached node
