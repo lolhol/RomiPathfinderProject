@@ -207,7 +207,8 @@ public class SubsystemPathExec extends SubsystemBase {
         mapRenderTick = 0;
         Mat frame = new Mat((int) output.mapSizeX, (int) output.mapSizeY, CvType.CV_8UC1);
 
-        byte[] newMap = output.map.clone();
+        byte[] newMap = resizeMap(output.map.clone(), (int) output.mapSizeX, (int) output.mapSizeY, 400, 400);
+
         for (Node i : path) {
           newMap[(int) (i.y * output.mapSizeX + i.x)] = 0;
         }
@@ -218,5 +219,22 @@ public class SubsystemPathExec extends SubsystemBase {
         mapRenderTick++;
       }
     }
+  }
+
+  public byte[] resizeMap(byte[] oldMap, int oldSizeX, int oldSizeY, int newSizeX, int newSizeY) {
+    if (oldMap == null || oldSizeX <= 0 || oldSizeY <= 0 || newSizeX <= 0 || newSizeY <= 0) {
+    }
+
+    byte[] newMap = new byte[newSizeX * newSizeY];
+    for (int y = 0; y < newSizeY; y++) {
+      for (int x = 0; x < newSizeX; x++) {
+        int oldX = (int) ((long) x * oldSizeX / newSizeX);
+        int oldY = (int) ((long) y * oldSizeY / newSizeY);
+
+        newMap[y * newSizeX + x] = oldMap[oldY * oldSizeX + oldX];
+      }
+    }
+
+    return newMap;
   }
 }
