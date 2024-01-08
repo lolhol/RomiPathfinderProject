@@ -203,11 +203,11 @@ public class SubsystemPathExec extends SubsystemBase {
 
   private void mapRenderTick(CvSource cv, CartographerOut output) {
     if (output.map.length > 0) {
-      if (mapRenderTick >= 25) {
+      if (mapRenderTick >= 50) {
         mapRenderTick = 0;
         Mat frame = new Mat((int) output.mapSizeX, (int) output.mapSizeY, CvType.CV_8UC1);
 
-        byte[] newMap = resizeMap(output.map.clone(), (int) output.mapSizeX, (int) output.mapSizeY, 400, 400);
+        byte[] newMap = resizeMap(output.map, (int) output.mapSizeX, (int) output.mapSizeY, 600, 600);
 
         for (Node i : path) {
           newMap[(int) (i.y * output.mapSizeX + i.x)] = 0;
@@ -222,9 +222,6 @@ public class SubsystemPathExec extends SubsystemBase {
   }
 
   public byte[] resizeMap(byte[] oldMap, int oldSizeX, int oldSizeY, int newSizeX, int newSizeY) {
-    if (oldMap == null || oldSizeX <= 0 || oldSizeY <= 0 || newSizeX <= 0 || newSizeY <= 0) {
-    }
-
     byte[] newMap = new byte[newSizeX * newSizeY];
     for (int y = 0; y < newSizeY; y++) {
       for (int x = 0; x < newSizeX; x++) {
