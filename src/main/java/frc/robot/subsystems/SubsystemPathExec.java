@@ -230,8 +230,11 @@ public class SubsystemPathExec extends SubsystemBase {
         Math.atan2(dy, dx) / Math.PI * 180);
 
     // System.out.println(curPos[2]);
+    double angleDeg = (curPos[2] / Math.PI * 180);
 
-    return (curPos[2] / Math.PI * 180) - angle;
+    System.out.println(angleDeg);
+
+    return angleDeg - angle;
   }
 
   private List<Node> removeEverythingUntil(List<Node> original) {
