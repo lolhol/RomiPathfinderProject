@@ -78,8 +78,6 @@ public class GoogleCartographer {
             float[] cartesianY, float[] intensities /* how reflective a surface is */) { // if lidar does not return
                                                                                          // intensities jst make new arr
                                                                                          // filled with 255
-
-        System.out.println("CALLABACK!");
         if (!isInitiated) {
             return;
         }
