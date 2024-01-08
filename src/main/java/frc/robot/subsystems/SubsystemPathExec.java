@@ -45,6 +45,8 @@ public class SubsystemPathExec extends SubsystemBase {
 
   byte[] cutMap;
 
+  boolean isAdded = false;
+
   // 0 = right, 1 = left, 2 = forward, 3 = backward
 
   public SubsystemPathExec(
@@ -89,7 +91,12 @@ public class SubsystemPathExec extends SubsystemBase {
         }
       } else {
         int[] endPosLocal = convertPosToNewMapScale(output, 250);
-        endPos = new int[] { endPosLocal[0] + 50, endPosLocal[1] };
+
+        if (!isAdded) {
+          endPos = new int[] { endPosLocal[0], endPosLocal[1] + 50 };
+          isAdded = true;
+        }
+
         finderRunThread = new FinderThread(
             endPos,
             output.FromPosToMap(new float[] { curPosData[0], curPosData[1] }),
