@@ -18,6 +18,10 @@ public class MathUtil {
     return sign * (b - a < 180 ? b - a : (b - a) - 360);
   }
 
+  public static double wrap360(double angle) {
+    return angle < 0 ? angle : angle + 180;
+  }
+
   public static int[] getPointDistFromWithAngle(
       int[] curPoint,
       double curAngle,

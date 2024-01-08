@@ -230,7 +230,7 @@ public class SubsystemPathExec extends SubsystemBase {
         Math.atan2(dy, dx) / Math.PI * 180);
 
     // System.out.println(curPos[2]);
-    double angleDeg = (curPos[2] / Math.PI * 180);
+    double angleDeg = MathUtil.wrap360((curPos[2] / Math.PI * 180));
 
     System.out.println(angleDeg + " !!!!!!!!");
 
