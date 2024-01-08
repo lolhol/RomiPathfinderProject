@@ -25,6 +25,7 @@ public class FinderThread extends Thread {
 
   @Override
   public void run() {
+    this.star.setIter(100000);
     this.res = star.run(start, end, board, xSize, ySize, new Options() {
 
       @Override

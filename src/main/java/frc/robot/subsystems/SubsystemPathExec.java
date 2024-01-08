@@ -90,18 +90,19 @@ public class SubsystemPathExec extends SubsystemBase {
           finderRunThread = null;
         }
       } else {
-        // int[] endPosLocal = convertPosToNewMapScale(output, 250);
+        int[] curPos = output.FromPosToMap(curPosData);
 
         if (!isAdded) {
           isAdded = true;
+          endPos = new int[] { curPos[0], curPos[1] - 100 };
         }
-        // endPos = new int[] { endPosLocal[0], endPosLocal[1] - 50 };
+
         // System.out.println(endPos[0] + " | " + endPos[1]);
 
         finderRunThread = new FinderThread(
             endPos,
-            convertPosToNewMapScale(output, 250),
-            cutMap, (int) 250, (int) 250);
+            curPos,
+            output.map, (int) output.mapSizeX, (int) output.mapSizeY);
         finderRunThread.start();
 
         System.out.println("STARTING FINDER!");
