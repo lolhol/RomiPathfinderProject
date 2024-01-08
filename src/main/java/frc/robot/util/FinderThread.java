@@ -36,9 +36,7 @@ public class FinderThread extends Thread {
 
       @Override
       public boolean isAddNode(int arg0) {
-        double val = arg0 / 100.;
-
-        return val == 2.55 || val < 0.5;
+        return arg0 != 255;
       }
 
     });
