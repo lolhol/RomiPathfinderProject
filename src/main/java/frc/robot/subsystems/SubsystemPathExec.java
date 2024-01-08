@@ -160,7 +160,7 @@ public class SubsystemPathExec extends SubsystemBase {
 
           if (angleDiff > 0) {
             if (!sentQueue[1] || ticksUntilSend >= 50) {
-              rominator.turn(true, 33);
+              rominator.turn(false, 33);
               sentQueue[1] = true;
 
               if (sentQueue[0]) {
@@ -171,7 +171,7 @@ public class SubsystemPathExec extends SubsystemBase {
             }
           } else {
             if (!sentQueue[0] || ticksUntilSend >= 50) {
-              rominator.turn(false, 33);
+              rominator.turn(true, 33);
               sentQueue[0] = true;
 
               if (sentQueue[1]) {
