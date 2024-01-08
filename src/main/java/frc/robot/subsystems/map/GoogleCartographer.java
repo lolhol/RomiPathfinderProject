@@ -29,7 +29,7 @@ public class GoogleCartographer {
             return null;
         }
 
-        if (scanCount >= 5 || oldOutPut == null) {
+        if (scanCount >= 15 || oldOutPut == null) {
             byte[] rawMap = cartographerPort.paintMap();
             scanCount = 0;
 
