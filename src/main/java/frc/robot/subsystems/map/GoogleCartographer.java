@@ -11,6 +11,8 @@ import frc.robot.subsystems.map.util.CartographerOut.CartoFunctions;
 public class GoogleCartographer {
     private boolean isInitiated = false;
     private Cartographer4Java cartographerPort;
+    private CartographerOut oldOutPut = null;
+    private int scanCount = 0;
 
     public GoogleCartographer() {
         cartographerPort = new Cartographer4Java();
@@ -27,27 +29,33 @@ public class GoogleCartographer {
             return null;
         }
 
-        byte[] rawMap = cartographerPort.paintMap();
+        if (scanCount >= 5 || oldOutPut == null) {
+            byte[] rawMap = cartographerPort.paintMap();
+            scanCount = 0;
 
-        ByteBuffer byteBuffer = ByteBuffer.wrap(rawMap).order(ByteOrder.nativeOrder());
-        final long mapSizeX = byteBuffer.getLong();
-        final long mapSizeY = byteBuffer.getLong();
-        final double originX = byteBuffer.getDouble();
-        final double originY = byteBuffer.getDouble();
-        final double resolution = byteBuffer.getDouble();
-        final byte[] mapBytes = new byte[byteBuffer.remaining()];
-        byteBuffer.get(mapBytes);
+            ByteBuffer byteBuffer = ByteBuffer.wrap(rawMap).order(ByteOrder.nativeOrder());
+            final long mapSizeX = byteBuffer.getLong();
+            final long mapSizeY = byteBuffer.getLong();
+            final double originX = byteBuffer.getDouble();
+            final double originY = byteBuffer.getDouble();
+            final double resolution = byteBuffer.getDouble();
+            final byte[] mapBytes = new byte[byteBuffer.remaining()];
+            byteBuffer.get(mapBytes);
 
-        if (mapBytes.length == 0) {
-            return null;
+            if (mapBytes.length == 0) {
+                return null;
+            }
+
+            oldOutPut = new CartographerOut(mapSizeX, mapSizeY, originX, originY, resolution, mapBytes,
+                    new CartoFunctions() {
+                        @Override
+                        public float[] GetGlobalData() {
+                            return GetRobotPositionData();
+                        }
+                    });
         }
 
-        return new CartographerOut(mapSizeX, mapSizeY, originX, originY, resolution, mapBytes, new CartoFunctions() {
-            @Override
-            public float[] GetGlobalData() {
-                return GetRobotPositionData();
-            }
-        });
+        return oldOutPut;
     }
 
     public float getGlobalX() {
@@ -76,6 +84,7 @@ public class GoogleCartographer {
             return;
         }
 
+        scanCount++;
         cartographerPort.updateLidarData(timeStampMS, cartesianX, cartesianY, intensities);
     }
 

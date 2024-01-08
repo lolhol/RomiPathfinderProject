@@ -11,20 +11,20 @@ public class FinderThread extends Thread {
   private final int[] start;
   private final int[] end;
   private final byte[] board;
-  private final int xSize;
+  private final int xSize, ySize;
 
-  public FinderThread(int[] endPos, int[] startPos, byte[] board, int xSize) {
+  public FinderThread(int[] endPos, int[] startPos, byte[] board, int xSize, int ySize) {
     this.star = new AStar();
     this.end = endPos;
     this.start = startPos;
     this.board = board;
     this.xSize = xSize;
+    this.ySize = ySize;
   }
 
   @Override
   public void run() {
-    this.res =
-      star.runAndShorten(start, end, board, board.length / xSize, xSize);
+    this.res = star.run(start, end, board, xSize, xSize);
   }
 
   public List<Node> getRes() {

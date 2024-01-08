@@ -90,7 +90,7 @@ public class SubsystemPathExec extends SubsystemBase {
         finderRunThread = new FinderThread(
             endPos,
             output.FromPosToMap(new float[] { curPosData[0], curPosData[1] }),
-            output.map, (int) output.mapSizeX);
+            output.map, (int) output.mapSizeX, (int) output.mapSizeY);
         finderRunThread.start();
       }
     } else {
