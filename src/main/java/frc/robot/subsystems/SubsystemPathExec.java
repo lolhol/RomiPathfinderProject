@@ -199,6 +199,8 @@ public class SubsystemPathExec extends SubsystemBase {
     double angle = MathUtil.normaliseDeg(
         Math.atan2(dy, dx) / Math.PI * 180);
 
+    System.out.println("!!!!! " + (curPos[2] / Math.PI * 180));
+
     return MathUtil.diffDeg((curPos[2] / Math.PI * 180), angle);
   }
 
