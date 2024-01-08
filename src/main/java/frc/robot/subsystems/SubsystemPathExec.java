@@ -222,6 +222,15 @@ public class SubsystemPathExec extends SubsystemBase {
         for (Node i : path) {
           newMap[(int) (i.y * newRes + i.x)] = 0;
         }
+
+        int[] curPos = output.FromPosToMap(output.functions.GetGlobalData());
+        newMap[curPos[1] * newRes + curPos[0]] = 0;
+        newMap[curPos[1] * newRes + curPos[0] + 1] = 0;
+        newMap[curPos[1] * newRes + curPos[0] + 2] = 0;
+        newMap[(curPos[1] + 1) * newRes + curPos[0]] = 0;
+        newMap[(curPos[1] + 1) * newRes + curPos[0] + 1] = 0;
+        newMap[(curPos[1] + 2) * newRes + curPos[0]] = 0;
+
         newMap[endPos[1] * newRes + endPos[0]] = 0;
         newMap[endPos[1] * newRes + endPos[0] + 1] = 0;
         newMap[(endPos[1] + 1) * newRes + endPos[0]] = 0;
