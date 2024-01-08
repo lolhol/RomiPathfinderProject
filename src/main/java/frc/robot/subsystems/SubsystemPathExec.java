@@ -205,7 +205,7 @@ public class SubsystemPathExec extends SubsystemBase {
       Node[] nodesAround = i.getNodesAround(3, 3);
       int nonAirCount = 0;
       for (Node j : nodesAround) {
-        if (j.x >= finalMapSize || j.y >= finalMapSize)
+        if (j.x < 0 || j.y < 0 || j.x >= finalMapSize || j.y >= finalMapSize)
           continue;
         if (cutMap[j.y * finalMapSize * j.x] == 255) {
           nonAirCount++;
