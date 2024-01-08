@@ -25,7 +25,7 @@ public class FinderThread extends Thread {
 
   @Override
   public void run() {
-    this.res = star.run(start, end, board, xSize, xSize, new Options() {
+    this.res = star.run(start, end, board, xSize, ySize, new Options() {
 
       @Override
       public boolean isAddNode(byte arg0) {
