@@ -252,16 +252,18 @@ public class SubsystemPathExec extends SubsystemBase {
         int oldY = (int) ((long) y * oldSizeY / newSizeY);
         double val = (oldMap[oldY * oldSizeX + oldX] & 0xFF) / 100.;
 
-        int color;
-        if (val == 2.55) {
-          color = 127;
-        } else {
-          if (val < 0.5) {
-            color = 255;
-          } else {
-            color = 0;
-          }
-        }
+        int color = (val == 2.55 || val < 0.5) ? 255 : 0;
+        /*
+         * if (val == 2.55) {
+         * color = 127;
+         * } else {
+         * if (val < 0.5) {
+         * color = 255;
+         * } else {
+         * color = 0;
+         * }
+         * }
+         */
 
         newMap[y * newSizeX + x] = (byte) color;
       }
