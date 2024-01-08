@@ -28,7 +28,7 @@ public class CartographerOut {
         return (int) ((y - originY) / resolution);
     }
 
-    public int[] fromPosToMap(double[] curPos) {
+    public int[] FromPosToMap(float[] curPos) {
         return new int[] { fromXToMapX(curPos[0]), fromXToMapX(curPos[1]) };
     }
 

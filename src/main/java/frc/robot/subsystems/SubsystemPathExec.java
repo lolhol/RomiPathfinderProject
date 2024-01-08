@@ -84,7 +84,12 @@ public class SubsystemPathExec extends SubsystemBase {
           finderRunThread = null;
         }
       } else {
-        finderRunThread = new FinderThread(endPos, output.fromPosToMap(new double[] { curPosData[0], curPosData[1] }),
+        float[] globalPos = output.functions.GetGlobalData();
+        int[] endPosLocal = output.FromPosToMap(globalPos);
+        endPos = new int[] { endPosLocal[0] + 15, endPosLocal[1] + 15 };
+        finderRunThread = new FinderThread(
+            endPos,
+            output.FromPosToMap(new float[] { curPosData[0], curPosData[1] }),
             output.map, (int) output.mapSizeX);
         finderRunThread.start();
       }
@@ -215,6 +220,7 @@ public class SubsystemPathExec extends SubsystemBase {
         for (Node i : path) {
           newMap[(int) (i.y * newRes + i.x)] = 0;
         }
+        newMap[(int) (endPos[1] * newRes + endPos[0])] = 0;
 
         frame.put(0, 0, newMap);
         cv.putFrame(frame);
