@@ -6,7 +6,7 @@ import ev3dev.sensors.slamtec.RPLidarA1ServiceException;
 import ev3dev.sensors.slamtec.RPLidarProviderListener;
 import ev3dev.sensors.slamtec.model.Scan;
 import ev3dev.sensors.slamtec.model.ScanDistance;
-import frc.robot.subsystems.path.map.util.DataOutPutFinish;
+import frc.robot.subsystems.map.util.DataOutPutFinish;
 
 import java.util.ArrayList;
 import java.util.Comparator;
