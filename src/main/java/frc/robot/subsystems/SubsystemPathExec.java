@@ -86,7 +86,7 @@ public class SubsystemPathExec extends SubsystemBase {
       } else {
         float[] globalPos = output.functions.GetGlobalData();
         int[] endPosLocal = output.FromPosToMap(globalPos);
-        endPos = new int[] { endPosLocal[0] + 15, endPosLocal[1] + 15 };
+        endPos = new int[] { endPosLocal[0] + 50, endPosLocal[1] };
         finderRunThread = new FinderThread(
             endPos,
             output.FromPosToMap(new float[] { curPosData[0], curPosData[1] }),
