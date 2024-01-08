@@ -39,7 +39,11 @@ public class SubsystemPathExec extends SubsystemBase {
   private GenericEntry widgetRobot;
   private GenericEntry widgetTarget;
 
+  private boolean renderedNewMap = false;
+
   private boolean[] sentQueue = new boolean[] { false, false, false, false };
+
+  byte[] cutMap;
 
   // 0 = right, 1 = left, 2 = forward, 3 = backward
 
@@ -68,7 +72,7 @@ public class SubsystemPathExec extends SubsystemBase {
     mapRenderTick(cv, output);
     float[] curPosData = output.functions.GetGlobalData();
 
-    if (finderRunCount >= 50) {
+    if (finderRunCount >= 50 && renderedNewMap) {
       finderRunCount = 0;
 
       if (finderRunThread != null) {
@@ -95,6 +99,8 @@ public class SubsystemPathExec extends SubsystemBase {
 
         System.out.println("STARTING FINDER!");
       }
+
+      renderedNewMap = false;
     } else {
       finderRunCount++;
     }
@@ -218,6 +224,7 @@ public class SubsystemPathExec extends SubsystemBase {
         Mat frame = new Mat(newRes, newRes, CvType.CV_8UC1);
 
         byte[] newMap = resizeMap(output.map, (int) output.mapSizeX, (int) output.mapSizeY, newRes, newRes);
+        cutMap = newMap.clone();
 
         for (Node i : path) {
           newMap[(int) (i.y * newRes + i.x)] = 0;
@@ -238,6 +245,8 @@ public class SubsystemPathExec extends SubsystemBase {
 
         frame.put(0, 0, newMap);
         cv.putFrame(frame);
+
+        renderedNewMap = true;
       } else {
         mapRenderTick++;
       }
