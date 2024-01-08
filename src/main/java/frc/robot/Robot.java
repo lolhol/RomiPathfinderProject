@@ -129,13 +129,13 @@ public class Robot extends TimedRobot {
 
       lidar = new SubsystemLidar(cartographer.getCallback(), true, "/dev/ttyUSB0");
       lidar.setScanning(true);
+
+      pathExec = new SubsystemPathExec(true, m_romiDrivetrain);
+
+      pathExec.setDefaultCommand(
+          new RunCommand(() -> pathExec.tick(cartographer.getCartographerMapData(),
+              cvSource), pathExec));
     }).start();
-
-    pathExec = new SubsystemPathExec(true, m_romiDrivetrain);
-
-    pathExec.setDefaultCommand(
-        new RunCommand(() -> pathExec.tick(cartographer.getCartographerMapData(),
-            cvSource), pathExec));
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
