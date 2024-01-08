@@ -149,7 +149,7 @@ public class SubsystemPathExec extends SubsystemBase {
          * Math.round(angleDiff));
          */
 
-        System.out.println(angleDiff + "!!!!");
+        // System.out.println(angleDiff + "!!!!");
 
         if (Math.abs(angleDiff) > 5) {
           if (sentQueue[2]) {
@@ -230,14 +230,9 @@ public class SubsystemPathExec extends SubsystemBase {
     double angle = MathUtil.normaliseDeg(
         Math.atan2(dy, dx) / Math.PI * 180);
 
-    if (angle > 45) {
-      angle = 90 - angle;
-    }
-
     // System.out.println(curPos[2]);
     double angleDeg = MathUtil.wrap360((curPos[2] / Math.PI * 180));
-
-    // System.out.println(angleDeg + " !!!!!!!!");
+    System.out.println(angleDeg + " !!!!!!!!");
 
     return MathUtil.diffDeg(angleDeg, angle);
   }
