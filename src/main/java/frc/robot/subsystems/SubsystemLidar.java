@@ -9,6 +9,7 @@ import ev3dev.sensors.slamtec.model.ScanDistance;
 import frc.robot.subsystems.map.util.DataOutPutFinish;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
@@ -85,9 +86,13 @@ public class SubsystemLidar extends SubsystemBase {
       }
     }
 
-    float[][] retList = new float[2][];
+    float[] intensities = new float[distances.size()];
+    Arrays.fill(intensities, 255);
+
+    float[][] retList = new float[3][];
     retList[0] = xCoordinates;
     retList[1] = yCoordinates;
+    retList[2] = intensities;
 
     return retList;
   }
