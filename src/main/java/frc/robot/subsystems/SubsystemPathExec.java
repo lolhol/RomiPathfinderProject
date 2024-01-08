@@ -26,6 +26,7 @@ public class SubsystemPathExec extends SubsystemBase {
   private int ticksUntilSend = 0;
 
   private int finderRunCount = 50;
+  private final int finalMapSize = 250;
   private FinderThread finderRunThread = null;
   private final RomiDrivetrain rominator;
 
@@ -74,7 +75,7 @@ public class SubsystemPathExec extends SubsystemBase {
     mapRenderTick(cv, output);
     float[] curPosData = output.functions.GetGlobalData();
 
-    if (finderRunCount >= 50 && renderedNewMap && cutMap != null) {
+    if (finderRunCount >= 50 && renderedNewMap && cutMap != null && !isPathfinderPathValid()) {
       finderRunCount = 0;
 
       if (finderRunThread != null) {
@@ -92,7 +93,7 @@ public class SubsystemPathExec extends SubsystemBase {
       } else {
         int[] curPos = output.convertPosition(output.FromPosToMap(output.functions.GetGlobalData()),
             (int) output.mapSizeX,
-            (int) output.mapSizeY, 250, 250);
+            (int) output.mapSizeY, finalMapSize, finalMapSize);
 
         if (!isAdded) {
           isAdded = true;
@@ -104,7 +105,7 @@ public class SubsystemPathExec extends SubsystemBase {
         finderRunThread = new FinderThread(
             endPos,
             curPos,
-            cutMap, 250, 250);
+            cutMap, finalMapSize, finalMapSize);
         finderRunThread.start();
 
         System.out.println("STARTING FINDER!");
@@ -196,6 +197,29 @@ public class SubsystemPathExec extends SubsystemBase {
     }
   }
 
+  private boolean isPathfinderPathValid() {
+    if (path.isEmpty())
+      return false;
+
+    for (Node i : path) {
+      Node[] nodesAround = i.getNodesAround(3, 3);
+      int nonAirCount = 0;
+      for (Node j : nodesAround) {
+        if (j.x >= finalMapSize || j.y >= finalMapSize)
+          continue;
+        if (cutMap[j.y * finalMapSize * j.x] == 255) {
+          nonAirCount++;
+        }
+      }
+
+      if (nonAirCount > 3) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   private double getAngle(double[] mCurSQGoing, float[] curPos) {
     double dy = curPos[1] - mCurSQGoing[1]; // 7228-7450
     double dx = mCurSQGoing[0] - curPos[0]; // 5000-5313
@@ -231,30 +255,28 @@ public class SubsystemPathExec extends SubsystemBase {
       if (mapRenderTick >= 50) {
         mapRenderTick = 0;
 
-        int newRes = 250;
+        Mat frame = new Mat(finalMapSize, finalMapSize, CvType.CV_8UC1);
 
-        Mat frame = new Mat(newRes, newRes, CvType.CV_8UC1);
-
-        byte[] newMap = resizeMap(output.map, (int) output.mapSizeX, (int) output.mapSizeY, newRes, newRes);
+        byte[] newMap = resizeMap(output.map, (int) output.mapSizeX, (int) output.mapSizeY, finalMapSize, finalMapSize);
         cutMap = newMap.clone();
 
         for (Node i : path) {
-          newMap[(int) (i.y * newRes + i.x)] = 0;
+          newMap[(int) (i.y * finalMapSize + i.x)] = 0;
         }
 
         int[] curPos = output.convertPosition(output.FromPosToMap(output.functions.GetGlobalData()),
-            (int) output.mapSizeX, (int) output.mapSizeY, newRes, newRes);
-        newMap[curPos[1] * newRes + curPos[0]] = 0;
-        newMap[curPos[1] * newRes + curPos[0] + 1] = 0;
-        newMap[curPos[1] * newRes + curPos[0] + 2] = 0;
-        newMap[(curPos[1] + 1) * newRes + curPos[0]] = 0;
-        newMap[(curPos[1] + 1) * newRes + curPos[0] + 1] = 0;
-        newMap[(curPos[1] + 2) * newRes + curPos[0]] = 0;
+            (int) output.mapSizeX, (int) output.mapSizeY, finalMapSize, finalMapSize);
+        newMap[curPos[1] * finalMapSize + curPos[0]] = 0;
+        newMap[curPos[1] * finalMapSize + curPos[0] + 1] = 0;
+        newMap[curPos[1] * finalMapSize + curPos[0] + 2] = 0;
+        newMap[(curPos[1] + 1) * finalMapSize + curPos[0]] = 0;
+        newMap[(curPos[1] + 1) * finalMapSize + curPos[0] + 1] = 0;
+        newMap[(curPos[1] + 2) * finalMapSize + curPos[0]] = 0;
 
-        newMap[endPos[1] * newRes + endPos[0]] = 0;
-        newMap[endPos[1] * newRes + endPos[0] + 1] = 0;
-        newMap[(endPos[1] + 1) * newRes + endPos[0]] = 0;
-        newMap[(endPos[1] + 1) * newRes + endPos[0] + 1] = 0;
+        newMap[endPos[1] * finalMapSize + endPos[0]] = 0;
+        newMap[endPos[1] * finalMapSize + endPos[0] + 1] = 0;
+        newMap[(endPos[1] + 1) * finalMapSize + endPos[0]] = 0;
+        newMap[(endPos[1] + 1) * finalMapSize + endPos[0] + 1] = 0;
 
         frame.put(0, 0, newMap);
         cv.putFrame(frame);
