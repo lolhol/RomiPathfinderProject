@@ -205,12 +205,15 @@ public class SubsystemPathExec extends SubsystemBase {
     if (output.map.length > 0) {
       if (mapRenderTick >= 50) {
         mapRenderTick = 0;
-        Mat frame = new Mat(600, 600, CvType.CV_8UC1);
 
-        byte[] newMap = resizeMap(output.map, (int) output.mapSizeX, (int) output.mapSizeY, 600, 600);
+        int newRes = 600;
+
+        Mat frame = new Mat(newRes, newRes, CvType.CV_8UC1);
+
+        byte[] newMap = resizeMap(output.map, (int) output.mapSizeX, (int) output.mapSizeY, newRes, newRes);
 
         for (Node i : path) {
-          newMap[(int) (i.y * 600 + i.x)] = 0;
+          newMap[(int) (i.y * newRes + i.x)] = 0;
         }
 
         frame.put(0, 0, newMap);
