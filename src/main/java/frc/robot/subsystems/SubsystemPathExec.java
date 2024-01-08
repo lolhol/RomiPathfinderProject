@@ -93,9 +93,10 @@ public class SubsystemPathExec extends SubsystemBase {
         int[] endPosLocal = convertPosToNewMapScale(output, 250);
 
         if (!isAdded) {
-          endPos = new int[] { endPosLocal[0], endPosLocal[1] + 50 };
           isAdded = true;
         }
+        endPos = new int[] { endPosLocal[0], endPosLocal[1] + 50 };
+        System.out.println(endPos[0] + " | " + endPos[1]);
 
         finderRunThread = new FinderThread(
             endPos,
