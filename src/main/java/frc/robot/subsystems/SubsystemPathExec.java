@@ -57,7 +57,7 @@ public class SubsystemPathExec extends SubsystemBase {
   }
 
   public void tick(CartographerOut output, CvSource cv) {
-    if (output.map.length == 0 || initCount <= 400) {
+    if (output == null || output.map.length == 0 || initCount <= 400) {
       initCount++;
       return;
     }
