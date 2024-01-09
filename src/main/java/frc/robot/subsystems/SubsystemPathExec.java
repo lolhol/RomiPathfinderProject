@@ -149,7 +149,7 @@ public class SubsystemPathExec extends SubsystemBase {
          * Math.round(angleDiff));
          */
 
-        // System.out.println(angleDiff + "!!!!");
+        System.out.println(angleDiff + "!!!!");
 
         if (Math.abs(angleDiff) > 5) {
           if (sentQueue[2]) {
@@ -300,7 +300,7 @@ public class SubsystemPathExec extends SubsystemBase {
 
         newMap[(pointInDirection[1]) * finalMapSize + pointInDirection[0]] = 0;
 
-        System.out.println("MAP UPDATE!");
+        // System.out.println("MAP UPDATE!");
 
         frame.put(0, 0, newMap);
         cv.putFrame(frame);
