@@ -134,7 +134,7 @@ public class SubsystemPathExec extends SubsystemBase {
         widgetRobot.setString(
             "a=" +
                 Math.round(
-                    MathUtil.normaliseDeg(Math.toDegrees(curPosData[2]))));
+                    Math.toDegrees(curPosData[2])));
         widgetTarget.setString(
             "a=" +
                 Math.round(angleDiff));
