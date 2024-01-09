@@ -276,7 +276,7 @@ public class SubsystemPathExec extends SubsystemBase {
         int[] curPos = output.convertPosition(output.FromPosToMap(output.functions.GetGlobalData()),
             (int) output.mapSizeX, (int) output.mapSizeY, finalMapSize, finalMapSize);
 
-        int[] pointInDirection = getPointInDirection(curPos, output.functions.GetGlobalData()[2], 10.0);
+        int[] pointInDirection = getPointInDirection(curPos, output.functions.GetGlobalData()[2], -10.0);
         newMap[curPos[1] * finalMapSize + curPos[0]] = 0;
         newMap[curPos[1] * finalMapSize + curPos[0] + 1] = 0;
         newMap[curPos[1] * finalMapSize + curPos[0] + 2] = 0;
