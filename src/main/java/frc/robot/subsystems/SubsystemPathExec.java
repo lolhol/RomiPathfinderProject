@@ -134,12 +134,12 @@ public class SubsystemPathExec extends SubsystemBase {
         widgetRobot.setString(
             "a=" +
                 Math.round(
-                    MathUtil.wrap360(curPosData[2]));
+                    MathUtil.wrap360(curPosData[2])));
         widgetTarget.setString(
             "a=" +
                 Math.round(angleDiff));
 
-        //System.out.println(angleDiff + "!!!!");
+        // System.out.println(angleDiff + "!!!!");
 
         if (Math.abs(angleDiff) > 5) {
           if (sentQueue[2]) {
