@@ -149,7 +149,7 @@ public class SubsystemPathExec extends SubsystemBase {
          * Math.round(angleDiff));
          */
 
-        System.out.println(angleDiff + "!!!!");
+        // System.out.println(angleDiff + "!!!!");
 
         if (Math.abs(angleDiff) > 5) {
           if (sentQueue[2]) {
@@ -268,7 +268,7 @@ public class SubsystemPathExec extends SubsystemBase {
 
   private void mapRenderTick(CvSource cv, CartographerOut output) {
     if (output.map.length > 0) {
-      if (mapRenderTick >= 50) {
+      if (mapRenderTick >= 25) {
         mapRenderTick = 0;
 
         Mat frame = new Mat(finalMapSize, finalMapSize, CvType.CV_8UC1);
@@ -300,6 +300,8 @@ public class SubsystemPathExec extends SubsystemBase {
         newMap[(endPos[1] + 1) * finalMapSize + endPos[0] + 1] = 0;
 
         newMap[(pointInDirection[1]) * finalMapSize + pointInDirection[0]] = 0;
+
+        System.out.println("MAP UPDATE!");
 
         frame.put(0, 0, newMap);
         cv.putFrame(frame);
