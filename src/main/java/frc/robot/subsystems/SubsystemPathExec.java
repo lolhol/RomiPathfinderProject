@@ -303,7 +303,7 @@ public class SubsystemPathExec extends SubsystemBase {
   }
 
   private int[] getPointInDirection(int[] coordinates, double angle, double dist) {
-    double deg = MathUtil.wrap360Rad(angle);
+    double deg = MathUtil.normaliseDeg(-Math.toDegrees(angle));
     double newAngle = Math.toRadians(deg);
     int x = coordinates[0];
     int y = coordinates[1];
