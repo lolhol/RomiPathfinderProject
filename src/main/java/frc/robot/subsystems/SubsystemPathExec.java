@@ -276,8 +276,8 @@ public class SubsystemPathExec extends SubsystemBase {
         byte[] newMap = resizeMap(output.map, (int) output.mapSizeX, (int) output.mapSizeY, finalMapSize, finalMapSize);
         cutMap = newMap.clone();
 
-        // newMap = new byte[250 * 250];
-        // Arrays.fill(newMap, (byte) 255);
+        newMap = new byte[250 * 250];
+        Arrays.fill(newMap, (byte) 255);
 
         for (Node i : path) {
           newMap[(int) (i.y * finalMapSize + i.x)] = 0;
@@ -292,7 +292,6 @@ public class SubsystemPathExec extends SubsystemBase {
         newMap[curPos[1] * finalMapSize + curPos[0] + 2] = 0;
         newMap[(curPos[1] + 1) * finalMapSize + curPos[0]] = 0;
         newMap[(curPos[1] + 1) * finalMapSize + curPos[0] + 1] = 0;
-        newMap[(curPos[1] + 2) * finalMapSize + curPos[0]] = 0;
 
         newMap[endPos[1] * finalMapSize + endPos[0]] = 0;
         newMap[endPos[1] * finalMapSize + endPos[0] + 1] = 0;
