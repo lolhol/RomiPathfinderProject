@@ -59,11 +59,11 @@ public class SubsystemPathExec extends SubsystemBase {
     this.rominator = rominator;
     this.turnedOn = isOn;
 
-    // ShuffleboardTab tab = Shuffleboard.getTab("SLAM");
-    // widgetRobot = tab.add("Robot",
-    // "").withWidget(BuiltInWidgets.kTextView).getEntry();
-    // widgetTarget = tab.add("Target",
-    // "").withWidget(BuiltInWidgets.kTextView).getEntry();
+    ShuffleboardTab tab = Shuffleboard.getTab("SLAM");
+    widgetRobot = tab.add("Robot",
+        "").withWidget(BuiltInWidgets.kTextView).getEntry();
+    widgetTarget = tab.add("Target",
+        "").withWidget(BuiltInWidgets.kTextView).getEntry();
   }
 
   public void tick(CartographerOut output, CvSource cv) {
@@ -130,26 +130,16 @@ public class SubsystemPathExec extends SubsystemBase {
         // Reached node
       } else {
         double angleDiff = getAngle(output.MapXYtoGlobal(new int[] { curSQGoing.x, curSQGoing.y }), curPosData);
-        /*
-         * widgetRobot.setString(
-         * "a=" +
-         * Math.round(curPosDataMMDeg[2]) +
-         * " x=" +
-         * Math.round(curPosDataMMDeg[0]) +
-         * " y=" +
-         * Math.round(curPosDataMMDeg[1]));
-         * widgetTarget.setString(
-         * "a=" +
-         * Math.round(angle) +
-         * " x=" +
-         * Math.round(posMMNode[0]) +
-         * " y=" +
-         * Math.round(posMMNode[1]) +
-         * " angleDiff=" +
-         * Math.round(angleDiff));
-         */
 
-        System.out.println(angleDiff + "!!!!");
+        widgetRobot.setString(
+            "a=" +
+                Math.round(
+                    MathUtil.wrap360(curPosData[2]));
+        widgetTarget.setString(
+            "a=" +
+                Math.round(angleDiff));
+
+        //System.out.println(angleDiff + "!!!!");
 
         if (Math.abs(angleDiff) > 5) {
           if (sentQueue[2]) {
