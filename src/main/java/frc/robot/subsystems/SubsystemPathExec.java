@@ -264,10 +264,10 @@ public class SubsystemPathExec extends SubsystemBase {
         Mat frame = new Mat(finalMapSize, finalMapSize, CvType.CV_8UC1);
 
         byte[] newMap = resizeMap(output.map, (int) output.mapSizeX, (int) output.mapSizeY, finalMapSize, finalMapSize);
-        cutMap = newMap.clone();
 
         newMap = new byte[250 * 250];
         Arrays.fill(newMap, (byte) 255);
+        cutMap = newMap.clone();
 
         for (Node i : path) {
           newMap[(int) (i.y * finalMapSize + i.x)] = 0;
@@ -276,7 +276,7 @@ public class SubsystemPathExec extends SubsystemBase {
         int[] curPos = output.convertPosition(output.FromPosToMap(output.functions.GetGlobalData()),
             (int) output.mapSizeX, (int) output.mapSizeY, finalMapSize, finalMapSize);
 
-        int[] pointInDirection = getPointInDirection(curPos, output.functions.GetGlobalData()[2], 5.0);
+        int[] pointInDirection = getPointInDirection(curPos, output.functions.GetGlobalData()[2], 10.0);
         newMap[curPos[1] * finalMapSize + curPos[0]] = 0;
         newMap[curPos[1] * finalMapSize + curPos[0] + 1] = 0;
         newMap[curPos[1] * finalMapSize + curPos[0] + 2] = 0;
